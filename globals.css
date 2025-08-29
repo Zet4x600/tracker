@@ -1,9 +1,0 @@
-html, body, #__next {
-  background: black !important;
-  margin: 0 !important;
-  padding: 0 !important;
-  border: none !important;
-  height: 100%;
-  width: 100%;
-  box-sizing: border-box !important;
-}
