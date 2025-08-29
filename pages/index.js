@@ -29,7 +29,7 @@ export default function Home() {
           style={{
             color: 'white',
             background: 'transparent',
-            border: '2px solid black',
+            border: '0px solid black',
             padding: '20px 40px',
             fontSize: '2rem',
             cursor: 'pointer',
