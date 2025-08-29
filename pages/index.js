@@ -29,11 +29,13 @@ export default function Home() {
           style={{
             color: 'white',
             background: 'transparent',
-            border: '0px solid black',
+            border: '2px solid transparent',
             padding: '20px 40px',
             fontSize: '2rem',
             cursor: 'pointer',
+            outline: 'none',
           }}
+          onFocus={(e) => e.target.style.outline = 'none'}
         >
           click here
         </button>
