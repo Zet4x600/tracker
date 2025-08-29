@@ -10,7 +10,7 @@ export default function Home() {
     setClicked(true);
   };
 
-  // Reset dell'effetto glow dopo mezzo secondo
+  // Reset dell'effetto glow dopo 500ms
   useEffect(() => {
     if (clicked) {
       const timer = setTimeout(() => setClicked(false), 500);
