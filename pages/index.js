@@ -4,31 +4,7 @@ import { useState } from 'react';
 export default function Home() {
   const [accepted, setAccepted] = useState(false);
 
-  const handleClick = (e) => {
-    const button = e.currentTarget;
-
-    // Rimuove eventuale ripple precedente
-    const rippleOld = button.querySelector('.ripple');
-    if (rippleOld) {
-      rippleOld.remove();
-    }
-
-    // Crea l'elemento ripple
-    const ripple = document.createElement('span');
-    const diameter = Math.max(button.clientWidth, button.clientHeight);
-    ripple.style.width = ripple.style.height = `${diameter}px`;
-
-    // Posiziona il ripple al punto del click
-    const rect = button.getBoundingClientRect();
-    ripple.style.left = `${e.clientX - rect.left - diameter / 2}px`;
-    ripple.style.top = `${e.clientY - rect.top - diameter / 2}px`;
-
-    ripple.classList.add('ripple');
-    button.appendChild(ripple);
-
-    // Avvia il video dopo 500ms
-    setTimeout(() => setAccepted(true), 500);
-  };
+  const handleClick = () => setAccepted(true);
 
   return (
     <>
@@ -37,40 +13,37 @@ export default function Home() {
         <link rel="icon" type="image/png" href="/favicon.png" />
       </Head>
 
-      <div
-        style={{
-          backgroundColor: 'black',
-          height: '100vh',
-          margin: 0,
-          padding: 0,
-          overflow: 'hidden',
-          display: 'flex',
-          flexDirection: 'column',
-          justifyContent: 'center',
-          alignItems: 'center',
-          color: 'white',
-        }}
-      >
+      <div style={{
+        backgroundColor: 'black',
+        height: '100vh',
+        margin: 0,
+        padding: 0,
+        overflow: 'hidden',
+        display: 'flex',
+        flexDirection: 'column',
+        justifyContent: 'center',
+        alignItems: 'center',
+        color: 'white',
+      }}>
         {!accepted && (
           <button
             onClick={handleClick}
-            className="glow-text"
+            className="glow-button"
             style={{
-              position: 'relative',
-              overflow: 'hidden',
+              color: 'white',
               background: 'transparent',
-              border: '2px solid white',
+              border: 'none',
               padding: '20px 40px',
               fontSize: '2rem',
               cursor: 'pointer',
-              color: 'white',
-              borderRadius: '8px',
               outline: 'none',
+              borderRadius: '12px',
             }}
           >
             click here
           </button>
         )}
+
         {accepted && (
           <video
             src="/video.mp4"
@@ -88,31 +61,16 @@ export default function Home() {
       </div>
 
       <style jsx>{`
-        .glow-text {
-          transition: text-shadow 0.3s ease-in-out;
+        .glow-button {
+          transition: color 0.3s ease, text-shadow 0.3s ease;
         }
-        .glow-text:hover {
+        .glow-button:hover {
+          color: #0ff;
           text-shadow:
-            0 0 5px #00ffff,
-            0 0 10px #00ffff,
-            0 0 20px #00ffff,
-            0 0 40px #00ffff;
-          color: #00ffff;
-        }
-        .ripple {
-          position: absolute;
-          border-radius: 50%;
-          background-color: rgba(0, 255, 255, 0.4);
-          transform: scale(0);
-          animation: ripple-animation 600ms linear;
-          pointer-events: none;
-          z-index: 10;
-        }
-        @keyframes ripple-animation {
-          to {
-            transform: scale(4);
-            opacity: 0;
-          }
+            0 0 5px #0ff,
+            0 0 10px #0ff,
+            0 0 20px #0ff,
+            0 0 30px #0ff;
         }
       `}</style>
     </>
