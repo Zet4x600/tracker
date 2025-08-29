@@ -1,27 +1,33 @@
 import Head from 'next/head';
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 
 export default function Home() {
   const [accepted, setAccepted] = useState(false);
 
   const handleClick = (e) => {
     const button = e.currentTarget;
-    const circle = document.createElement('span');
-    const diameter = Math.max(button.clientWidth, button.clientHeight);
-    const radius = diameter / 2;
 
-    circle.style.width = circle.style.height = `${diameter}px`;
-    circle.style.left = `${e.clientX - button.offsetLeft - radius}px`;
-    circle.style.top = `${e.clientY - button.offsetTop - radius}px`;
-    circle.classList.add('ripple');
-
-    const ripple = button.getElementsByClassName('ripple')[0];
-    if (ripple) {
-      ripple.remove();
+    // Rimuove eventuale ripple precedente
+    const rippleOld = button.querySelector('.ripple');
+    if (rippleOld) {
+      rippleOld.remove();
     }
 
-    button.appendChild(circle);
-    setTimeout(() => setAccepted(true), 300);
+    // Crea l'elemento ripple
+    const ripple = document.createElement('span');
+    const diameter = Math.max(button.clientWidth, button.clientHeight);
+    ripple.style.width = ripple.style.height = `${diameter}px`;
+
+    // Posiziona il ripple al punto del click
+    const rect = button.getBoundingClientRect();
+    ripple.style.left = `${e.clientX - rect.left - diameter / 2}px`;
+    ripple.style.top = `${e.clientY - rect.top - diameter / 2}px`;
+
+    ripple.classList.add('ripple');
+    button.appendChild(ripple);
+
+    // Dopo animazione, parte il video
+    setTimeout(() => setAccepted(true), 500);
   };
 
   return (
@@ -42,9 +48,6 @@ export default function Home() {
         justifyContent: 'center',
         alignItems: 'center',
         color: 'white',
-        border: 'none',
-        outline: 'none',
-        boxShadow: 'none',
       }}>
         {!accepted && (
           <button
@@ -65,6 +68,7 @@ export default function Home() {
             click here
           </button>
         )}
+
         {accepted && (
           <video
             src="/video.mp4"
@@ -85,14 +89,14 @@ export default function Home() {
         .ripple {
           position: absolute;
           border-radius: 50%;
-          background: rgba(255, 255, 255, 0.6);
-          animation: ripple-effect 600ms linear;
-          pointer-events: none;
+          background-color: rgba(255, 255, 255, 0.5);
           transform: scale(0);
-          opacity: 1;
+          animation: ripple-animation 600ms linear;
+          pointer-events: none;
           z-index: 10;
         }
-        @keyframes ripple-effect {
+
+        @keyframes ripple-animation {
           to {
             transform: scale(4);
             opacity: 0;
