@@ -3,20 +3,26 @@ import { useState, useEffect } from 'react';
 
 export default function Home() {
   const [accepted, setAccepted] = useState(false);
-  const [clicked, setClicked] = useState(false);
 
-  const handleClick = () => {
-    setAccepted(true);
-    setClicked(true);
-  };
+  const handleClick = (e) => {
+    const button = e.currentTarget;
+    const circle = document.createElement('span');
+    const diameter = Math.max(button.clientWidth, button.clientHeight);
+    const radius = diameter / 2;
 
-  // Reset dell'effetto glow dopo 500ms
-  useEffect(() => {
-    if (clicked) {
-      const timer = setTimeout(() => setClicked(false), 500);
-      return () => clearTimeout(timer);
+    circle.style.width = circle.style.height = `${diameter}px`;
+    circle.style.left = `${e.clientX - button.offsetLeft - radius}px`;
+    circle.style.top = `${e.clientY - button.offsetTop - radius}px`;
+    circle.classList.add('ripple');
+
+    const ripple = button.getElementsByClassName('ripple')[0];
+    if (ripple) {
+      ripple.remove();
     }
-  }, [clicked]);
+
+    button.appendChild(circle);
+    setTimeout(() => setAccepted(true), 300);
+  };
 
   return (
     <>
@@ -44,20 +50,17 @@ export default function Home() {
           <button
             onClick={handleClick}
             style={{
+              position: 'relative',
+              overflow: 'hidden',
               color: 'white',
               background: 'transparent',
-              border: '2px solid transparent',
+              border: '2px solid white',
               padding: '20px 40px',
               fontSize: '2rem',
               cursor: 'pointer',
               outline: 'none',
-              boxShadow: clicked
-                ? '0 0 12px 4px rgba(255, 255, 255, 0.8), 0 0 20px 8px rgba(255, 255, 255, 0.5)'
-                : 'none',
-              transition: 'box-shadow 0.3s ease-in-out',
               borderRadius: '8px',
             }}
-            onFocus={e => e.target.style.outline = 'none'}
           >
             click here
           </button>
@@ -77,6 +80,25 @@ export default function Home() {
           />
         )}
       </div>
+
+      <style jsx>{`
+        .ripple {
+          position: absolute;
+          border-radius: 50%;
+          background: rgba(255, 255, 255, 0.6);
+          animation: ripple-effect 600ms linear;
+          pointer-events: none;
+          transform: scale(0);
+          opacity: 1;
+          z-index: 10;
+        }
+        @keyframes ripple-effect {
+          to {
+            transform: scale(4);
+            opacity: 0;
+          }
+        }
+      `}</style>
     </>
   );
 }
