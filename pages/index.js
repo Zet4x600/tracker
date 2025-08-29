@@ -1,11 +1,33 @@
 import Head from 'next/head';
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 
 export default function Home() {
   const [accepted, setAccepted] = useState(false);
 
-  const handleClick = () => {
-    setAccepted(true);
+  const handleClick = (e) => {
+    const button = e.currentTarget;
+
+    // Rimuove eventuale ripple precedente
+    const rippleOld = button.querySelector('.ripple');
+    if (rippleOld) {
+      rippleOld.remove();
+    }
+
+    // Crea l'elemento ripple
+    const ripple = document.createElement('span');
+    const diameter = Math.max(button.clientWidth, button.clientHeight);
+    ripple.style.width = ripple.style.height = `${diameter}px`;
+
+    // Posiziona il ripple al punto del click
+    const rect = button.getBoundingClientRect();
+    ripple.style.left = `${e.clientX - rect.left - diameter / 2}px`;
+    ripple.style.top = `${e.clientY - rect.top - diameter / 2}px`;
+
+    ripple.classList.add('ripple');
+    button.appendChild(ripple);
+
+    // Avvia il video dopo 500ms
+    setTimeout(() => setAccepted(true), 500);
   };
 
   return (
@@ -15,23 +37,27 @@ export default function Home() {
         <link rel="icon" type="image/png" href="/favicon.png" />
       </Head>
 
-      <div style={{
-        backgroundColor: 'black',
-        height: '100vh',
-        margin: 0,
-        padding: 0,
-        overflow: 'hidden',
-        display: 'flex',
-        flexDirection: 'column',
-        justifyContent: 'center',
-        alignItems: 'center',
-        color: 'white',
-      }}>
+      <div
+        style={{
+          backgroundColor: 'black',
+          height: '100vh',
+          margin: 0,
+          padding: 0,
+          overflow: 'hidden',
+          display: 'flex',
+          flexDirection: 'column',
+          justifyContent: 'center',
+          alignItems: 'center',
+          color: 'white',
+        }}
+      >
         {!accepted && (
           <button
             onClick={handleClick}
             className="glow-text"
             style={{
+              position: 'relative',
+              overflow: 'hidden',
               background: 'transparent',
               border: '2px solid white',
               padding: '20px 40px',
@@ -67,15 +93,26 @@ export default function Home() {
         }
         .glow-text:hover {
           text-shadow:
-            0 0 5px #fff,
-            0 0 10px #fff,
-            0 0 15px #00ffff,
+            0 0 5px #00ffff,
+            0 0 10px #00ffff,
             0 0 20px #00ffff,
-            0 0 30px #00ffff,
-            0 0 40px #00ffff,
-            0 0 55px #00ffff,
-            0 0 75px #00ffff;
+            0 0 40px #00ffff;
           color: #00ffff;
+        }
+        .ripple {
+          position: absolute;
+          border-radius: 50%;
+          background-color: rgba(0, 255, 255, 0.4);
+          transform: scale(0);
+          animation: ripple-animation 600ms linear;
+          pointer-events: none;
+          z-index: 10;
+        }
+        @keyframes ripple-animation {
+          to {
+            transform: scale(4);
+            opacity: 0;
+          }
         }
       `}</style>
     </>
