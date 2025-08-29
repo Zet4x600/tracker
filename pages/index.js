@@ -19,6 +19,9 @@ export default function Home() {
       justifyContent: 'center',
       alignItems: 'center',
       color: 'white',
+      border: 'none',
+      outline: 'none',
+      boxShadow: 'none',
     }}>
       {!accepted && (
         <button
@@ -26,7 +29,7 @@ export default function Home() {
           style={{
             color: 'white',
             background: 'transparent',
-            border: '2px solid white',
+            border: '2px solid black',
             padding: '20px 40px',
             fontSize: '2rem',
             cursor: 'pointer',
@@ -43,6 +46,9 @@ export default function Home() {
           style={{
             width: '80vw',
             maxWidth: 800,
+            outline: 'none',
+            border: 'none',
+            boxShadow: 'none',
           }}
         />
       )}
