@@ -1,12 +1,22 @@
 import Head from 'next/head';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 export default function Home() {
   const [accepted, setAccepted] = useState(false);
+  const [clicked, setClicked] = useState(false);
 
   const handleClick = () => {
     setAccepted(true);
+    setClicked(true);
   };
+
+  // Reset dell'effetto glow dopo mezzo secondo
+  useEffect(() => {
+    if (clicked) {
+      const timer = setTimeout(() => setClicked(false), 500);
+      return () => clearTimeout(timer);
+    }
+  }, [clicked]);
 
   return (
     <>
@@ -33,14 +43,19 @@ export default function Home() {
         {!accepted && (
           <button
             onClick={handleClick}
-            className="rainbow-button"
             style={{
+              color: 'white',
               background: 'transparent',
               border: '2px solid transparent',
               padding: '20px 40px',
               fontSize: '2rem',
               cursor: 'pointer',
               outline: 'none',
+              boxShadow: clicked
+                ? '0 0 12px 4px rgba(255, 255, 255, 0.8), 0 0 20px 8px rgba(255, 255, 255, 0.5)'
+                : 'none',
+              transition: 'box-shadow 0.3s ease-in-out',
+              borderRadius: '8px',
             }}
             onFocus={e => e.target.style.outline = 'none'}
           >
@@ -62,47 +77,6 @@ export default function Home() {
           />
         )}
       </div>
-
-      <style jsx>{`
-        .rainbow-button {
-          position: relative;
-          color: white;
-          font-weight: bold;
-          background-image: linear-gradient(
-            90deg,
-            red,
-            orange,
-            yellow,
-            green,
-            blue,
-            indigo,
-            violet
-          );
-          -webkit-background-clip: text;
-          -webkit-text-fill-color: transparent;
-          animation: rainbow-animation 3s linear infinite;
-          border-radius: 10px;
-          transition: box-shadow 0.3s ease;
-        }
-        .rainbow-button:hover {
-          box-shadow:
-            0 0 10px red,
-            0 0 20px orange,
-            0 0 30px yellow,
-            0 0 40px green,
-            0 0 50px blue,
-            0 0 60px indigo,
-            0 0 70px violet;
-        }
-        @keyframes rainbow-animation {
-          0% {
-            background-position: 0% 50%;
-          }
-          100% {
-            background-position: 360% 50%;
-          }
-        }
-      `}</style>
     </>
   );
 }
