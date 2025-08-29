@@ -1,8 +1,8 @@
-import { useState, useEffect } from 'react';
+import { useEffect, useState } from 'react';
 
 export default function Admin() {
   const [ips, setIps] = useState([]);
-  
+
   useEffect(() => {
     fetch('/api/ips')
       .then((res) => res.json())
@@ -10,23 +10,12 @@ export default function Admin() {
   }, []);
 
   return (
-    <div style={{
-      backgroundColor: 'black',
-      minHeight: '100vh',
-      margin: 0,
-      padding: 0,
-      color: 'white',
-      display: 'flex',
-      flexDirection: 'column',
-      alignItems: 'center',
-      justifyContent: 'center',
-      border: 'none',
-      outline: 'none',
-      boxShadow: 'none',
-    }}>
-      <h2 style={{outline: 'none'}}>IP visitatori:</h2>
+    <div style={{ backgroundColor: 'black', color: 'white', minHeight: '100vh', padding: '20px' }}>
+      <h1>IP visitatori</h1>
       <ul>
-        {ips.map((ip, idx) => <li key={idx} style={{outline: 'none'}}>{ip}</li>)}
+        {ips && ips.map((ip) => (
+          <li key={ip}>{ip}</li>
+        ))}
       </ul>
     </div>
   );
