@@ -11,17 +11,22 @@ export default function Admin() {
 
   return (
     <div style={{
-      background: 'black',
+      backgroundColor: 'black',
       minHeight: '100vh',
+      margin: 0,
+      padding: 0,
       color: 'white',
       display: 'flex',
       flexDirection: 'column',
       alignItems: 'center',
-      justifyContent: 'center'
+      justifyContent: 'center',
+      border: 'none',
+      outline: 'none',
+      boxShadow: 'none',
     }}>
-      <h2>IP visitatori:</h2>
+      <h2 style={{outline: 'none'}}>IP visitatori:</h2>
       <ul>
-        {ips.map((ip, idx) => <li key={idx}>{ip}</li>)}
+        {ips.map((ip, idx) => <li key={idx} style={{outline: 'none'}}>{ip}</li>)}
       </ul>
     </div>
   );
