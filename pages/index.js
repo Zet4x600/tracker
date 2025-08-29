@@ -40,7 +40,7 @@ export default function Home() {
               borderRadius: '12px',
             }}
           >
-            click here
+            Click Here
           </button>
         )}
 
